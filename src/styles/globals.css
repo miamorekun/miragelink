@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+	font-family: var(--font-rubik), "-apple-system", Arial, Helvetica, sans-serif;
+	@apply text-gray-950;
+}
