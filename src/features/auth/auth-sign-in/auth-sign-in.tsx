@@ -19,8 +19,8 @@ type Props = {
 }
 
 const formSchema = z.object({
-	email: z.string().email("Введите корректный email"),
-	password: z.string().min(8, "Пароль должен содержать минимум 8 символов"),
+	email: z.string().email("Please enter a valid email"),
+	password: z.string().min(8, "Password must contain at least 8 characters"),
 })
 
 type TFormSchema = z.infer<typeof formSchema>
@@ -62,7 +62,7 @@ function AuthSignIn({className}: Props) {
 				className="space-y-6">
 				<div className="flex items-center gap-x-6 justify-center">
 					<div className="w-full h-[1px] bg-gray-200" />
-					<span className="text-sm text-gray-500">Или</span>
+					<span className="text-sm text-gray-500">or</span>
 					<div className="w-full h-[1px] bg-gray-200" />
 				</div>
 
@@ -72,37 +72,37 @@ function AuthSignIn({className}: Props) {
 						<InputWithController
 							control={control}
 							name="email"
-							placeholder="Введите email"
+							placeholder="Enter email"
 							className="w-full h-[42px] bg-gray-100"
 						/>
 					</div>
 				</div>
 
 				<div className="space-y-2">
-					<p className="text-xs text-gray-700">Пароль</p>
+					<p className="text-xs text-gray-700">Password</p>
 
 					<div>
 						<InputWithController
 							control={control}
 							name="password"
-							placeholder="Введите пароль"
+							placeholder="Enter password"
 							className="w-full h-[42px] bg-gray-100"
 							type="password"
 						/>
 					</div>
 
-					<Link
+					{/* <Link
 						className="inline-block text-xs text-gray-700 hover:underline"
 						href="/auth/reset-password">
-						<p className="text-xs text-gray-500">Забыли пароль?</p>
-					</Link>
+						<p className="text-xs text-gray-500">Forgot password?</p>
+					</Link> */}
 				</div>
 
 				<Button
 					type="submit"
 					className="w-full h-[42px]">
 					{isSignInPending && <Loader />}
-					Войти
+					Sign In
 				</Button>
 			</form>
 		</div>

@@ -13,8 +13,8 @@ function DialogCard({className, dialog, isActive}: Props) {
 	return (
 		<div
 			className={cn(
-				`px-3 py-2 flex items-center gap-x-3 cursor-pointer rounded-md hover:bg-gray-100/75 transition-colors`,
-				isActive && "bg-gray-100/75",
+				`px-3 py-2 flex items-center gap-x-3 cursor-pointer rounded-md hover:bg-blue-50/75 transition-colors`,
+				isActive && "bg-blue-50/75",
 				className,
 			)}>
 			<div>

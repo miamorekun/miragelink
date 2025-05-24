@@ -10,17 +10,7 @@ type Props = {
 }
 
 function LayoutWrapper({className, children}: Props) {
-	return (
-		<React.Fragment>
-			<div>
-				<LayoutNav />
-				{/* <LayoutHeader /> */}
-			</div>
-			{children}
-
-			<LayoutFooter />
-		</React.Fragment>
-	)
+	return <React.Fragment>{children}</React.Fragment>
 }
 
 export {LayoutWrapper}

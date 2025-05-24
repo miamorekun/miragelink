@@ -4,5 +4,5 @@
 
 body {
 	font-family: var(--font-rubik), "-apple-system", Arial, Helvetica, sans-serif;
-	@apply text-gray-950;
+	@apply text-gray-950 bg-gray-50;
 }

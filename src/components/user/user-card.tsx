@@ -7,9 +7,12 @@ import {SessionMenu} from "@/features/session/session-menu"
 type Props = {
 	className?: string
 	user: TUser
+	slots?: {
+		sessionMenu?: React.ReactNode
+	}
 }
 
-function UserCard({className, user}: Props) {
+function UserCard({className, user, slots}: Props) {
 	return (
 		<div
 			className={cn(`px-3 py-2 flex items-center gap-x-3 rounded-md transition-colors`, className)}>
@@ -24,9 +27,7 @@ function UserCard({className, user}: Props) {
 				<p className="text-xs text-blue-600">Online</p>
 			</div>
 
-			<div>
-				<SessionMenu />
-			</div>
+			{slots?.sessionMenu && <div>{slots.sessionMenu}</div>}
 		</div>
 	)
 }

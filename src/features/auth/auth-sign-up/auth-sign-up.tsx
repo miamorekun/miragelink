@@ -24,12 +24,12 @@ type Props = {
 
 const formSchema = z
 	.object({
-		email: z.string().email("Введите корректный email"),
-		password: z.string().min(8, "Пароль должен содержать минимум 8 символов"),
-		confirmPassword: z.string().min(8, "Пароль должен содержать минимум 8 символов"),
+		email: z.string().email("Please enter a valid email"),
+		password: z.string().min(8, "Password must contain at least 8 characters"),
+		confirmPassword: z.string().min(8, "Password must contain at least 8 characters"),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
-		message: "Пароли не совпадают",
+		message: "Passwords do not match",
 		path: ["confirmPassword"],
 	})
 
@@ -62,7 +62,7 @@ function AuthSignUp({className}: Props) {
 			{
 				onSuccess: ({data}) => {
 					if (data?.user?.email_confirmed_at) {
-						toast.success("Ваш аккаунт успешно зарегистрирован!")
+						toast.success("Your account has been successfully registered!")
 						push("/")
 					}
 				},
@@ -80,21 +80,21 @@ function AuthSignUp({className}: Props) {
 				className="space-y-6">
 				<div className="flex items-center gap-x-6 justify-center">
 					<div className="w-full h-[1px] bg-gray-200" />
-					<span className="text-sm text-gray-500">Или</span>
+					<span className="text-sm text-gray-500">or</span>
 					<div className="w-full h-[1px] bg-gray-200" />
 				</div>
 
 				{signUpData && signUpData.data?.user?.confirmation_sent_at && (
 					<Alert variant="success">
-						<AlertTitle>Осталось еще немного!</AlertTitle>
-						<AlertDescription>Мы отправили письмо на ваш email для подтверждения.</AlertDescription>
+						<AlertTitle>Almost there!</AlertTitle>
+						<AlertDescription>We've sent a confirmation email to your address.</AlertDescription>
 					</Alert>
 				)}
 
 				{signUpData && signUpData.data?.user?.email_confirmed_at && (
 					<Alert variant="success">
-						<AlertTitle>Поздарвляем!</AlertTitle>
-						<AlertDescription>Ваш аккаунт успешно зарегистрирован.</AlertDescription>
+						<AlertTitle>Congratulations!</AlertTitle>
+						<AlertDescription>Your account has been successfully registered.</AlertDescription>
 					</Alert>
 				)}
 
@@ -104,20 +104,20 @@ function AuthSignUp({className}: Props) {
 						<InputWithController
 							control={control}
 							name="email"
-							placeholder="Введите email"
+							placeholder="Enter email"
 							className="w-full h-[42px] bg-gray-100"
 						/>
 					</div>
 				</div>
 
 				<div className="space-y-2">
-					<p className="text-xs text-gray-700">Пароль</p>
+					<p className="text-xs text-gray-700">Password</p>
 
 					<div>
 						<InputWithController
 							control={control}
 							name="password"
-							placeholder="Введите пароль"
+							placeholder="Enter password"
 							className="w-full h-[42px] bg-gray-100"
 							type="password"
 						/>
@@ -125,13 +125,13 @@ function AuthSignUp({className}: Props) {
 				</div>
 
 				<div className="space-y-2">
-					<p className="text-xs text-gray-700">Повторите пароль</p>
+					<p className="text-xs text-gray-700">Confirm Password</p>
 
 					<div>
 						<InputWithController
 							control={control}
 							name="confirmPassword"
-							placeholder="Введите пароль"
+							placeholder="Enter password"
 							className="w-full h-[42px] bg-gray-100"
 							type="password"
 						/>
@@ -142,7 +142,7 @@ function AuthSignUp({className}: Props) {
 					type="submit"
 					className="w-full h-[42px]">
 					{isSignUpPending && <Loader />}
-					Зарегистрироваться
+					Sign Up
 				</Button>
 			</form>
 		</div>

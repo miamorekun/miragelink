@@ -10,7 +10,7 @@ type Props = {
 function DialogSearch({className}: Props) {
 	return (
 		<div className={cn(``, className)}>
-			<div className="border border-gray-200 bg-gray-50 rounded-md h-9 flex items-center gap-x-3 px-3">
+			<div className="focus-within:border-blue-500 hover:border-blue-500 transition-colors border border-gray-200 bg-gray-50 rounded-md h-9 flex items-center gap-x-3 px-3">
 				<IoSearchOutline size={16} />
 				<Input
 					className="w-full h-full placeholder:text-gray-500 text-xs"

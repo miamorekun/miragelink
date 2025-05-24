@@ -18,7 +18,7 @@ function AuthWithGoogle({className}: Props) {
 			variant={"outline"}
 			className="w-full font-normal">
 			<FcGoogle size={16} />
-			<span>Войти с Google</span>
+			<span>Sign in with Google</span>
 		</Button>
 	)
 }

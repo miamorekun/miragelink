@@ -5,13 +5,14 @@ import React from "react"
 type Props = {
 	className?: string
 	dialog: TUser
+	isActive?: boolean
 }
 
 function DialogAvatar({className, dialog}: Props) {
 	return (
 		<div
 			className={cn(
-				`h-9 w-9 rounded-full flex items-center justify-center bg-blue-50 text-blue-800 font-medium text-sm`,
+				`h-9 w-9 rounded-full flex items-center justify-center bg-blue-500 text-white font-medium text-sm`,
 				className,
 			)}>
 			{dialog.displayName.slice(0, 1).toUpperCase()}

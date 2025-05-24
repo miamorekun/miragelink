@@ -20,38 +20,39 @@ export default function SignInPage() {
 		<div className="md:max-w-sm mx-auto max-md:px-12 mt-24 space-y-12">
 			{/* Heading */}
 			<div className="text-center space-y-1">
-				<p className="font-medium text-md">Вход в FeedFlux</p>
-				<p className="text-sm leading-[1.5] text-gray-700">
-					Рады вас видеть! Войдите в профиль FeedFlux <br />И продолжайте свое путешествие!
-				</p>
+				<p className="font-medium text-md">Sign in</p>
+				{/* <p className="text-sm leading-[1.5] text-gray-700">
+					Welcome back! Sign in to your profile <br />
+					And continue your journey!
+				</p> */}
 			</div>
 
 			<div className="space-y-6">
 				<AuthSignIn />
 				<p className="text-sm text-gray-500 text-center">
-					Еще не создали аккаунт?
+					Don't have an account yet?
 					<Link
-						className="text-primary-500 hover:underline ml-2"
+						className="text-blue-600 hover:underline ml-2"
 						href="/auth/sign-up">
-						Регистрация
+						Sign Up
 					</Link>
 				</p>
 			</div>
-
+			{/* 
 			<p className="text-xs text-gray-500 text-center">
-				Продолжая вы автоматически соглашаетесь соглашаетесь с нашей{" "}
+				By continuing, you automatically agree to our{" "}
 				<Link
 					className="text-gray-900 hover:underline"
 					href="/privacy-policy">
-					политикой конфиденциальности
+					privacy policy
 				</Link>{" "}
-				и{" "}
+				and{" "}
 				<Link
 					className="text-gray-900 hover:underline"
 					href="/offer">
-					договором публичной оферты
+					terms of service
 				</Link>
-			</p>
+			</p> */}
 		</div>
 		// </LayoutWrapper>
 	)
