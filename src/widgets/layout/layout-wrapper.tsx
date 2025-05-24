@@ -14,7 +14,7 @@ function LayoutWrapper({className, children}: Props) {
 		<React.Fragment>
 			<div>
 				<LayoutNav />
-				<LayoutHeader />
+				{/* <LayoutHeader /> */}
 			</div>
 			{children}
 

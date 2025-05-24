@@ -10,7 +10,7 @@ type Props = {
 function LayoutNav({className}: Props) {
 	return (
 		<div className={cn(`bg-gray-50 border-b border-gray-100`, className)}>
-			<div className="max-w-4xl mx-auto px-6 flex items-center justify-between py-2">
+			<div className="max-w-5xl mx-auto px-6 flex items-center justify-between py-2">
 				<div className="flex items-center gap-x-6">
 					<LayoutNavItem href="/">Privacy</LayoutNavItem>
 					<LayoutNavItem href="/">Terms and conditions</LayoutNavItem>

@@ -60,7 +60,7 @@ export const ThemeColors = {
 		900: "#321001",
 		950: "#190800",
 	},
-	gray: colors.stone,
+	gray: colors.neutral,
 	black: "#000000",
 	white: "#FFFFFF",
 	transparent: "transparent",
