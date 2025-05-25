@@ -3,18 +3,18 @@ import { TMessage } from "../../../types/message.types";
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
 
 // Function params
-export type GetMessageParams = {
+export type GetMessageByIdParams = {
   chatId: string;
   messageId: string;
 };
 
 // Function response type
-export type GetMessageResponse = TMessage;
+export type GetMessageByIdResponse = TMessage;
 
 // Get message by ID function
 export const getMessageById = async (
-  params: GetMessageParams,
-): Promise<GetMessageResponse> => {
+  params: GetMessageByIdParams,
+): Promise<GetMessageByIdResponse> => {
   const { chatId, messageId } = params;
   const response: PostgrestSingleResponse<TMessage> = await supabaseClient
     .from("messages")
@@ -39,5 +39,5 @@ export const getMessageById = async (
   if (!response.data) {
     throw new Error("Message not found");
   }
-  return response.data as GetMessageResponse;
+  return response.data as GetMessageByIdResponse;
 };
