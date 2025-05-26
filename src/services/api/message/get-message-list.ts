@@ -2,15 +2,15 @@ import {supabaseClient} from "@/utils/supabase"
 import {TMessage} from "../../../types/message.types"
 import {PostgrestSingleResponse} from "@supabase/supabase-js"
 
-export type GetMessagesListParams = {
+export type GetMessageListParams = {
 	chatId: string
 }
 
-export type GetMessagesListResponse = TMessage[]
+export type GetMessageListResponse = TMessage[]
 
-export const getMessagesList = async (
-	params: GetMessagesListParams,
-): Promise<GetMessagesListResponse> => {
+export const getMessageList = async (
+	params: GetMessageListParams,
+): Promise<GetMessageListResponse> => {
 	const {chatId} = params
 
 	try {
@@ -60,9 +60,9 @@ export const getMessagesList = async (
 			throw new Error(response.error.message)
 		}
 
-		return response.data as GetMessagesListResponse
+		return response.data as GetMessageListResponse
 	} catch (error) {
-		console.error("Unexpected error in getMessagesList:", error)
+		console.error("Unexpected error in getMessageList:", error)
 		throw error
 	}
 }

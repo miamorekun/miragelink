@@ -2,13 +2,13 @@ import {supabaseClient} from "@/utils/supabase"
 import {TChat} from "../../../types/chat.types"
 
 export type PostChatParams = {
-	user2Id: string
+	toUserId: string
 }
 
 export type PostChatResponse = TChat
 
 export const postChat = async (params: PostChatParams): Promise<PostChatResponse> => {
-	const {user2Id} = params
+	const {toUserId} = params
 
 	try {
 		const {
@@ -16,15 +16,15 @@ export const postChat = async (params: PostChatParams): Promise<PostChatResponse
 		} = await supabaseClient.auth.getUser()
 		if (!user) throw new Error("User not authenticated")
 
-		const user1Id = user.id
+		const userId = user.id
+		const user1_id = userId < toUserId ? userId : toUserId
+		const user2_id = userId < toUserId ? toUserId : userId
 
 		// Check if a chat already exists between user1Id and user2Id
 		const {data: existingChat, error: fetchError} = await supabaseClient
 			.from("chats")
-			.select("id, user1_id, user2_id")
-			.or(
-				`and(user1_id.eq.${user1Id},user2_id.eq.${user2Id}),and(user1_id.eq.${user2Id},user2_id.eq.${user1Id})`,
-			)
+			.select("*")
+			.match({user1_id, user2_id})
 			.single()
 
 		if (fetchError && fetchError.code !== "PGRST116") {
@@ -33,14 +33,11 @@ export const postChat = async (params: PostChatParams): Promise<PostChatResponse
 		}
 
 		if (existingChat) {
-			return existingChat as TChat
+			return existingChat as PostChatResponse
 		}
 
-		const chatData: Partial<TChat> = {
-			user1_id: user1Id < user2Id ? user1Id : user2Id,
-			user2_id: user1Id < user2Id ? user2Id : user1Id,
-		}
-
+		// Create a new chat
+		const chatData: Partial<TChat> = {user1_id, user2_id}
 		const {data, error} = await supabaseClient
 			.from("chats")
 			.insert(chatData)

@@ -4,6 +4,7 @@ import {Geist, Rubik} from "next/font/google"
 import {AppProvider} from "@/providers/app-provider"
 import NextTopLoader from "nextjs-toploader"
 import {ThemeColors} from "@/utils/theme"
+import {Suspense} from "react"
 
 const rubik = Rubik({
 	weight: ["400", "500", "600", "700", "800", "900"],
@@ -25,13 +26,15 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${rubik.variable} antialiased`}>
-				<NextTopLoader
-					showSpinner={false}
-					height={4}
-					shadow={"transparent"}
-					color={ThemeColors.primary[500]}
-				/>
-				<AppProvider>{children}</AppProvider>
+				<AppProvider>
+					<NextTopLoader
+						showSpinner={false}
+						height={4}
+						shadow={"transparent"}
+						color={ThemeColors.primary[500]}
+					/>
+					{children}
+				</AppProvider>
 			</body>
 		</html>
 	)

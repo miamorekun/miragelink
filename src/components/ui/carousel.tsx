@@ -131,7 +131,7 @@ const Carousel = React.forwardRef<
 		</CarouselContext.Provider>
 	)
 })
-Carousel.displayName = "Carousel"
+Carousel.display_name = "Carousel"
 
 const CarouselContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 	({className, ...props}, ref) => {
@@ -154,7 +154,7 @@ const CarouselContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HT
 		)
 	},
 )
-CarouselContent.displayName = "CarouselContent"
+CarouselContent.display_name = "CarouselContent"
 
 const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 	({className, ...props}, ref) => {
@@ -175,7 +175,7 @@ const CarouselItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
 		)
 	},
 )
-CarouselItem.displayName = "CarouselItem"
+CarouselItem.display_name = "CarouselItem"
 
 const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
 	({className, variant = "ghost", size = "icon", ...props}, ref) => {
@@ -201,7 +201,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
 		)
 	},
 )
-CarouselPrevious.displayName = "CarouselPrevious"
+CarouselPrevious.display_name = "CarouselPrevious"
 
 const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<typeof Button>>(
 	({className, variant = "ghost", size = "icon", ...props}, ref) => {
@@ -227,6 +227,6 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
 		)
 	},
 )
-CarouselNext.displayName = "CarouselNext"
+CarouselNext.display_name = "CarouselNext"
 
 export {type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext}

@@ -24,6 +24,6 @@ const Input = React.forwardRef<
 		/>
 	)
 })
-Input.displayName = "Input"
+Input.display_name = "Input"
 
 export {Input}

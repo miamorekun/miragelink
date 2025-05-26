@@ -1,105 +1,65 @@
+"use client"
+
 import {DialogCard} from "@/components/dialog"
 import {DialogAvatar} from "@/components/dialog/dialog-avatar"
 import {Dialog} from "@radix-ui/react-dialog"
 import {TUser} from "@/types/user.types"
 
 import {cn} from "@/utils/helpers/shadcn-ui"
-import React from "react"
+import React, {useState} from "react"
 import {UserCard} from "@/components/user"
 import {DialogSearch} from "../dialog-search"
 import {useSessionStore} from "@/stores/hooks/use-session-store"
 import {SessionMenu} from "@/features/session/session-menu"
+import {useGetUserList} from "@/services/hooks/user/user-get-user-list"
 
 type Props = {
 	className?: string
 }
 
-const dialogs: TUser[] = [
-	{
-		displayName: "John Doe",
-		uid: "123",
-	},
-	{
-		displayName: "Emma Wilson",
-		uid: "456",
-	},
-	{
-		displayName: "Michael Brown",
-		uid: "789",
-	},
-	{
-		displayName: "Sarah Johnson",
-		uid: "101",
-	},
-	{
-		displayName: "David Lee",
-		uid: "102",
-	},
-	{
-		displayName: "Lisa Anderson",
-		uid: "103",
-	},
-	{
-		displayName: "Robert Taylor",
-		uid: "104",
-	},
-	{
-		displayName: "Jennifer Martinez",
-		uid: "105",
-	},
-	{
-		displayName: "William Garcia",
-		uid: "106",
-	},
-	{
-		displayName: "Elizabeth White",
-		uid: "107",
-	},
-	{
-		displayName: "James Thompson",
-		uid: "108",
-	},
-	{
-		displayName: "Patricia Moore",
-		uid: "109",
-	},
-]
-
 function DialogList({className}: Props) {
+	// State
 	const {session} = useSessionStore()
+	const [searchQuery, setSearchQuery] = useState("")
+
+	const {
+		data: users,
+		isPending: isLoadingUsers,
+		isError: isErrorUsers,
+	} = useGetUserList({
+		select(data) {
+			const sortedData = data
+				.sort((a, b) => a.display_name.localeCompare(b.display_name))
+				.sort((a, b) => {
+					if (a.uid === session?.user?.id) return -1
+					if (b.uid === session?.user?.id) return 1
+					return 0
+				})
+
+			const filteredData = sortedData.filter(
+				(user) =>
+					user.display_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+					user.email.toLowerCase().includes(searchQuery.toLowerCase()),
+			)
+
+			return filteredData
+		},
+	})
 
 	return (
-		<div className={cn(`h-full relative w-full flex flex-col flex-grow space-y-6`, className)}>
-			{/* Active User */}
-			{session && session.user && (
-				<UserCard
-					className="bg-gray-100/75 p-4 rounded-none"
-					user={{
-						displayName: session.user.email || "",
-						uid: session.user.id,
-					}}
-					slots={{
-						sessionMenu: <SessionMenu />,
-					}}
-				/>
-			)}
+		<div className={cn(`flex flex-col`, className)}>
+			<DialogSearch
+				className="px-4"
+				value={searchQuery}
+				onChange={setSearchQuery}
+			/>
 
-			<DialogSearch className="px-4" />
-
-			<div className="flex-grow relative">
+			<div className="flex-grow relative mt-4 pb-4">
 				<div className="absolute top-0 left-0 w-full h-full overflow-y-auto px-1 space-y-0.5">
-					<DialogCard
-						isActive
-						dialog={{
-							displayName: "Lukas",
-							uid: "123",
-						}}
-					/>
-
-					{dialogs.map((dialog) => (
+					{users?.map((user) => (
 						<DialogCard
-							key={dialog.uid}
-							dialog={dialog}
+							key={user.uid}
+							dialog={user}
 						/>
 					))}
 				</div>

@@ -15,7 +15,7 @@ function DialogAvatar({className, dialog}: Props) {
 				`h-9 w-9 rounded-full flex items-center justify-center bg-blue-500 text-white font-medium text-sm`,
 				className,
 			)}>
-			{dialog.displayName.slice(0, 1).toUpperCase()}
+			{dialog.display_name.slice(0, 1).toUpperCase()}
 		</div>
 	)
 }

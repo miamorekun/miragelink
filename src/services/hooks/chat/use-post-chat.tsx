@@ -6,14 +6,9 @@ import {UseMutationOptions} from "@tanstack/react-query"
 export type UsePostChatParams = PostChatParams
 export type UsePostChatOptions = UseMutationOptions<PostChatResponse, Error, PostChatParams>
 
-export const postChatQueryKey = (params: UsePostChatParams) => {
-	return [QueryKeys.CHAT, params.user2Id]
-}
-
-export const postChatQueryOptions = (params: UsePostChatParams, options?: UsePostChatOptions) => {
-	return {
-		queryKey: postChatQueryKey(params),
-		queryFn: () => postChat(params),
+export const usePostChat = (options?: UsePostChatOptions) => {
+	return useMutation({
+		mutationFn: (params) => postChat(params),
 		...options,
-	}
+	})
 }

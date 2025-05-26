@@ -4,7 +4,7 @@ import React from "react"
 
 type Props = {
 	className?: string
-	user: TUser
+	user: Partial<TUser> & Pick<TUser, "uid">
 }
 
 function UserAvatar({className, user}: Props) {
@@ -14,7 +14,7 @@ function UserAvatar({className, user}: Props) {
 				`h-9 w-9 rounded-full flex items-center justify-center bg-blue-50 text-blue-800 font-medium text-sm`,
 				className,
 			)}>
-			{user.displayName.slice(0, 1).toUpperCase()}
+			{user.display_name?.slice(0, 1).toUpperCase()}
 		</div>
 	)
 }

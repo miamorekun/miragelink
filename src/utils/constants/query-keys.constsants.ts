@@ -5,4 +5,5 @@ export const QueryKeys = {
 	PUBLISHER: "publisher",
 	CATEGORY: "category",
 	CHAT: "chat",
+	MESSAGE: "message",
 } as const
