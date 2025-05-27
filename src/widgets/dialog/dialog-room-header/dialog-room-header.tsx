@@ -20,7 +20,7 @@ function DialogRoomHeader({className}: Props) {
 	)
 
 	return (
-		<div className={cn(`flex items-center justify-between px-9 border-b`, className)}>
+		<div className={cn(`flex items-center px-9 border-b`, className)}>
 			{user && (
 				<UserCard
 					className="py-4 px-0"
@@ -41,13 +41,13 @@ function DialogRoomHeader({className}: Props) {
 				/>
 			)}
 
-			{user && (
+			{/* {user && (
 				<Button
 					variant={"secondary"}
 					size={"icon_xs"}>
 					<IoTrashOutline />
 				</Button>
-			)}
+			)} */}
 		</div>
 	)
 }

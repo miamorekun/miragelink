@@ -28,7 +28,6 @@ import {
 	IoPersonCircleOutline,
 	IoPersonOutline,
 } from "react-icons/io5"
-import {LazyLoadImage} from "react-lazy-load-image-component"
 
 type Props = {
 	className?: string

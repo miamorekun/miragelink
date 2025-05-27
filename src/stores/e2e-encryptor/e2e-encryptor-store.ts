@@ -1,8 +1,5 @@
 import {E2EEncryptorEncryptedValue} from "@/types/e2e-encryptor.types"
-import {create} from "zustand"
-import {idbQueryStore} from "../idb/idb-query-store"
-import {hashKey} from "@tanstack/react-query"
-import {IdbStore, idbStore} from "../idb/idb-store"
+
 import {get as getKeyVal, keys, set as setKeyVal} from "idb-keyval"
 
 export class E2EEncryptorStore {

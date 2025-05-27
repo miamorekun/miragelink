@@ -9,7 +9,6 @@ import {useSearchParams} from "next/navigation"
 import {IoChatbox, IoChatboxEllipsesOutline, IoChatboxOutline} from "react-icons/io5"
 import {useGetChatByUserIds} from "@/services/hooks/chat/use-get-chat-by-user-ids"
 import {useSessionStore} from "@/stores/hooks/use-session-store"
-import {DialogHeader} from "@/components/ui/dialog"
 
 type Props = {
 	className?: string

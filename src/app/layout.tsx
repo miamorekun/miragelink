@@ -2,7 +2,6 @@ import "@/styles/globals.css"
 import type {Metadata} from "next"
 import {Geist, Rubik} from "next/font/google"
 import {AppProvider} from "@/providers/app-provider"
-import NextTopLoader from "nextjs-toploader"
 import {ThemeColors} from "@/utils/theme"
 import {Suspense} from "react"
 
@@ -26,15 +25,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${rubik.variable} antialiased`}>
-				<AppProvider>
-					<NextTopLoader
-						showSpinner={false}
-						height={4}
-						shadow={"transparent"}
-						color={ThemeColors.primary[500]}
-					/>
-					{children}
-				</AppProvider>
+				<AppProvider>{children}</AppProvider>
 			</body>
 		</html>
 	)
