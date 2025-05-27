@@ -2,11 +2,12 @@ import {PersistedQuery} from "@tanstack/react-query-persist-client"
 import Dexie, {Table} from "dexie"
 
 export class IdbStore extends Dexie {
-	queries!: Table<PersistedQuery>
+	keyValues!: Table<{key: string; value: string}>
+
 	constructor() {
 		super("idb-global-store")
 		this.version(1).stores({
-			queries: "queryHash",
+			keyValues: "key",
 		})
 	}
 }

@@ -27,7 +27,7 @@
 		"embla-carousel-react": "^8.6.0",
 		"embla-carousel-wheel-gestures": "^8.0.2",
 		"hash-sum": "^2.0.0",
-		"idb": "^8.0.3",
+		"idb-keyval": "^6.2.2",
 		"immer": "^10.1.1",
 		"ky-universal": "^0.12.0",
 		"lodash": "^4.17.21",

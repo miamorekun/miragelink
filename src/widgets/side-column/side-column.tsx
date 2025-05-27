@@ -13,7 +13,7 @@ function SideColumn({className}: Props) {
 	const {session} = useSessionStore()
 
 	return (
-		<div className={cn(`bg-white flex flex-col`, className)}>
+		<div className={cn(`bg-white flex flex-col border-r`, className)}>
 			<UserCard
 				className="p-4"
 				// @ts-ignore

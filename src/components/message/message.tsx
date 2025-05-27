@@ -21,7 +21,7 @@ function Message({className, message}: Props) {
 			<div
 				className={cn(
 					`p-3 min-w-[256px] rounded-md space-y-1.5`,
-					isOwn ? "bg-blue-50 text-blue-900" : "bg-gray-50 text-gray-900",
+					isOwn ? "bg-blue-50 text-blue-900" : "bg-gray-100 text-gray-900",
 					className,
 				)}>
 				<p className="text-sm font-medium text-blue-700">{user?.display_name}</p>

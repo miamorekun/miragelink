@@ -35,7 +35,7 @@
 // 		<ChevronRight className="ml-auto h-4 w-4" />
 // 	</ContextMenuPrimitive.SubTrigger>
 // ))
-// ContextMenuSubTrigger.display_name = ContextMenuPrimitive.SubTrigger.display_name
+// ContextMenuSubTrigger.displayName = ContextMenuPrimitive.SubTrigger.displayName
 
 // const ContextMenuSubContent = React.forwardRef<
 // 	React.ElementRef<typeof ContextMenuPrimitive.SubContent>,
@@ -50,7 +50,7 @@
 // 		{...props}
 // 	/>
 // ))
-// ContextMenuSubContent.display_name = ContextMenuPrimitive.SubContent.display_name
+// ContextMenuSubContent.displayName = ContextMenuPrimitive.SubContent.displayName
 
 // const ContextMenuContent = React.forwardRef<
 // 	React.ElementRef<typeof ContextMenuPrimitive.Content>,
@@ -67,7 +67,7 @@
 // 		/>
 // 	</ContextMenuPrimitive.Portal>
 // ))
-// ContextMenuContent.display_name = ContextMenuPrimitive.Content.display_name
+// ContextMenuContent.displayName = ContextMenuPrimitive.Content.displayName
 
 // const ContextMenuItem = React.forwardRef<
 // 	React.ElementRef<typeof ContextMenuPrimitive.Item>,
@@ -85,7 +85,7 @@
 // 		{...props}
 // 	/>
 // ))
-// ContextMenuItem.display_name = ContextMenuPrimitive.Item.display_name
+// ContextMenuItem.displayName = ContextMenuPrimitive.Item.displayName
 
 // const ContextMenuCheckboxItem = React.forwardRef<
 // 	React.ElementRef<typeof ContextMenuPrimitive.CheckboxItem>,
@@ -107,7 +107,7 @@
 // 		{children}
 // 	</ContextMenuPrimitive.CheckboxItem>
 // ))
-// ContextMenuCheckboxItem.display_name = ContextMenuPrimitive.CheckboxItem.display_name
+// ContextMenuCheckboxItem.displayName = ContextMenuPrimitive.CheckboxItem.displayName
 
 // const ContextMenuRadioItem = React.forwardRef<
 // 	React.ElementRef<typeof ContextMenuPrimitive.RadioItem>,
@@ -128,7 +128,7 @@
 // 		{children}
 // 	</ContextMenuPrimitive.RadioItem>
 // ))
-// ContextMenuRadioItem.display_name = ContextMenuPrimitive.RadioItem.display_name
+// ContextMenuRadioItem.displayName = ContextMenuPrimitive.RadioItem.displayName
 
 // const ContextMenuLabel = React.forwardRef<
 // 	React.ElementRef<typeof ContextMenuPrimitive.Label>,
@@ -146,7 +146,7 @@
 // 		{...props}
 // 	/>
 // ))
-// ContextMenuLabel.display_name = ContextMenuPrimitive.Label.display_name
+// ContextMenuLabel.displayName = ContextMenuPrimitive.Label.displayName
 
 // const ContextMenuSeparator = React.forwardRef<
 // 	React.ElementRef<typeof ContextMenuPrimitive.Separator>,
@@ -158,7 +158,7 @@
 // 		{...props}
 // 	/>
 // ))
-// ContextMenuSeparator.display_name = ContextMenuPrimitive.Separator.display_name
+// ContextMenuSeparator.displayName = ContextMenuPrimitive.Separator.displayName
 
 // const ContextMenuShortcut = ({className, ...props}: React.HTMLAttributes<HTMLSpanElement>) => {
 // 	return (
@@ -168,7 +168,7 @@
 // 		/>
 // 	)
 // }
-// ContextMenuShortcut.display_name = "ContextMenuShortcut"
+// ContextMenuShortcut.displayName = "ContextMenuShortcut"
 
 // export {
 // 	ContextMenu,

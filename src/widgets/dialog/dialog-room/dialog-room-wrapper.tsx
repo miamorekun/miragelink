@@ -24,7 +24,7 @@ function DialogRoomWrapper({className}: Props) {
 	// )
 
 	return (
-		<div className={cn(``, className)}>
+		<div className={cn(`bg-white`, className)}>
 			{!dialogId && (
 				<div className="w-full h-full flex flex-col gap-6 justify-center items-center text-blue-900 text-sm">
 					<IoChatboxEllipsesOutline size={24} />

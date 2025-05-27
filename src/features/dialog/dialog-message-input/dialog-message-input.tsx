@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {cn} from "@/utils/helpers/shadcn-ui"
-import React, {ChangeEvent, useState} from "react"
+import React, {ChangeEvent, useLayoutEffect, useState} from "react"
 import {IoSend} from "react-icons/io5"
 import {useGetChatByUserIds} from "@/services/hooks/chat/use-get-chat-by-user-ids"
 import {useSearchParams} from "next/navigation"
@@ -15,6 +15,7 @@ import {useGetUserPublicKeyById} from "@/services/hooks/user/use-get-user-public
 import {generateKey} from "crypto"
 import {useQueryClient} from "@tanstack/react-query"
 import {getMessageListQueryKey} from "@/services/hooks/message/use-get-message-list"
+import {QueryKeys} from "@/utils/constants/query-keys.constsants"
 
 type Props = {
 	className?: string
@@ -44,15 +45,12 @@ function DialogMessageInput({className}: Props) {
 	)
 
 	// Mutations
-	const {mutateAsync: postMessage, isPending: isPendingPostMessage} = usePostMessage()
-	const {mutateAsync: postChat, isPending: isPendingPostChat} = usePostChat()
-
-	// Handlers
 	const {
-		data: recipientPublicKey,
-		isLoading: isLoadingPublicKey,
-		error: publicKeyError,
-	} = useGetUserPublicKeyById(dialogId || "")
+		mutateAsync: postMessage,
+		isPending: isPendingPostMessage,
+		data: postMessageData,
+	} = usePostMessage()
+	const {mutateAsync: postChat, isPending: isPendingPostChat} = usePostChat()
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -63,16 +61,6 @@ function DialogMessageInput({className}: Props) {
 			return
 		}
 
-		//if (publicKeyError) {
-		//	console.error("Failed to load recipient public key:", publicKeyError)
-		//	return
-		//}
-
-		//if (isLoadingPublicKey || !recipientPublicKey) {
-		//	console.error("Recipient public key not available")
-		//	return
-		//}
-
 		try {
 			let chatId = chat?.id
 
@@ -80,40 +68,27 @@ function DialogMessageInput({className}: Props) {
 			if (!chatId) {
 				const createdChat = await postChat({toUserId: dialogId})
 				chatId = createdChat?.id
-				if (!chatId) {
-					throw new Error("Failed to create chat")
-				}
 			}
 
-			// Get sender's private key
-			const keyPair = await generateKeyPair()
-			const privateKey = keyPair?.privateKey
-			if (!privateKey) {
-				throw new Error("Sender private key not found")
-			}
-
-			// Encrypt message
-			//const encrypted = await encryptMessage(value, privateKey, recipientPublicKey)
-
-			// Stringify encrypted content for postMessage
-			//const content = JSON.stringify({
-			//	iv: Array.from(encrypted.iv),
-			//	ciphertext: Array.from(new Uint8Array(encrypted.ciphertext)),
-			//})
-			const content = value // For simplicity, using plain text here. Replace with encrypted content in prod.
-			// Send encrypted message
 			await postMessage({
 				chatId,
-				content,
+				content: value,
 				senderId: session.user.id,
 			})
 
-			// Invalidate message list query to refresh messages
-			queryClient.invalidateQueries({
-				queryKey: getMessageListQueryKey({
-					chatId: chat!.id,
-				}),
-			})
+			setTimeout(() => {
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.MESSAGE],
+				})
+
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.CHAT],
+				})
+
+				queryClient.invalidateQueries({
+					queryKey: [QueryKeys.USER],
+				})
+			}, 100)
 
 			setValue("")
 		} catch (error) {
@@ -121,7 +96,7 @@ function DialogMessageInput({className}: Props) {
 		}
 	}
 
-	function onChangeInputValue(event: ChangeEvent<HTMLInputElement>): void {
+	const onChangeInputValue = (event: ChangeEvent<HTMLInputElement>): void => {
 		setValue(event.target.value)
 	}
 
@@ -143,17 +118,17 @@ function DialogMessageInput({className}: Props) {
 				</div>
 				<Button
 					type="submit"
-					disabled={isPendingPostChat || isPendingPostMessage || !value.trim()}
+					disabled={isPendingPostChat || isPendingPostMessage || !value}
 					className="w-11 h-11 bg-blue-600 flex items-center justify-center rounded-md text-white">
 					{isPendingPostChat || isPendingPostMessage ? (
 						<Loader
-							size={18}
-							className="text-white"
+							size={24}
+							className="!text-xl text-white"
 						/>
 					) : (
 						<IoSend
-							size={18}
-							className="text-xl"
+							size={24}
+							className="!text-xl"
 						/>
 					)}
 				</Button>
