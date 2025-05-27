@@ -73,7 +73,7 @@ function DialogMessageList({className}: Props) {
 		}
 
 		decryptMessages()
-	}, [messages, dialogId])
+	}, [messages])
 
 	return (
 		<div className={cn("relative", className)}>
