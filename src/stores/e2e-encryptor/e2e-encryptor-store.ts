@@ -6,7 +6,7 @@ import {IdbStore, idbStore} from "../idb/idb-store"
 import {get as getKeyVal, set as setKeyVal} from "idb-keyval"
 
 export class E2EEncryptorStore {
-	static idbKey = "e2e-encryptor-private-key"
+	static idbKey = "e2e-encryptor-keys"
 
 	// Keys
 	static generateKeyPair = async (): Promise<CryptoKeyPair> => {
