@@ -10,23 +10,14 @@ import {TChat} from "@/types/chat.types"
 import {usePostChat} from "@/services/hooks/chat/use-post-chat"
 import {usePostMessage} from "@/services/hooks/message/use-post-message"
 import {Loader} from "@/components/ui/loader"
-import {encryptMessage, generateKeyPair} from "@/utils/helpers/crypto.helpers"
-import {useGetUserPublicKeyById} from "@/services/hooks/user/use-get-user-public-key-by-id"
-import {generateKey} from "crypto"
+
 import {useQueryClient} from "@tanstack/react-query"
-import {getMessageListQueryKey} from "@/services/hooks/message/use-get-message-list"
 import {QueryKeys} from "@/utils/constants/query-keys.constsants"
+import {E2EEncryptorStore} from "@/stores/e2e-encryptor/e2e-encryptor-store"
 
 type Props = {
 	className?: string
 	// chat: TChat | null
-}
-
-// Generate a key pair for encryption
-const keyPair = await generateKeyPair()
-const privateKey = keyPair?.privateKey
-if (!privateKey) {
-	throw new Error("Private key not found")
 }
 
 function DialogMessageInput({className}: Props) {
@@ -70,9 +61,12 @@ function DialogMessageInput({className}: Props) {
 				chatId = createdChat?.id
 			}
 
+			const keys = await E2EEncryptorStore.getKeys()
+			const encryptedValue = await E2EEncryptorStore.encrypt(value, keys)
+
 			await postMessage({
 				chatId,
-				content: value,
+				content: JSON.stringify(encryptedValue),
 				senderId: session.user.id,
 			})
 

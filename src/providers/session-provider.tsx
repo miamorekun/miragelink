@@ -8,6 +8,7 @@ import {Session} from "@supabase/supabase-js"
 import useUpdateEffect from "beautiful-react-hooks/useUpdateEffect"
 import {selectUser} from "@/services/api/user/select-user"
 import {insertUser} from "@/services/api/user/insert-user"
+import {E2EEncryptorStore} from "@/stores/e2e-encryptor/e2e-encryptor-store"
 
 type SessionProviderProps = {
 	children: React.ReactNode
@@ -31,7 +32,17 @@ function SessionProvider({children, className}: SessionProviderProps) {
 				email: newSession.user.email as string,
 			}
 
-			if (!profile) await insertUser(profileData).catch(() => null)
+			if (!profile) {
+				const keyPair = await E2EEncryptorStore.generateKeyPair()
+				await E2EEncryptorStore.setKeys({
+					privateKey: keyPair.privateKey,
+					publicKey: keyPair.publicKey,
+				})
+
+				const sb_public_key = await E2EEncryptorStore.exportKey(keyPair.publicKey)
+				await insertUser({...profileData, public_key: sb_public_key}).catch(() => null)
+			}
+
 			setSession(
 				produce(newSession, (draft) => {
 					draft.user.user_metadata = profileData

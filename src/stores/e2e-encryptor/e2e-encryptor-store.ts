@@ -3,7 +3,7 @@ import {create} from "zustand"
 import {idbQueryStore} from "../idb/idb-query-store"
 import {hashKey} from "@tanstack/react-query"
 import {IdbStore, idbStore} from "../idb/idb-store"
-import {get as getKeyVal, set as setKeyVal} from "idb-keyval"
+import {get as getKeyVal, keys, set as setKeyVal} from "idb-keyval"
 
 export class E2EEncryptorStore {
 	static idbKey = "e2e-encryptor-keys"
@@ -35,13 +35,13 @@ export class E2EEncryptorStore {
 		)
 	}
 
-	static deriveKey = async (privateKey: CryptoKey, publicKey: CryptoKey): Promise<CryptoKey> => {
+	static deriveKey = async (keyPair: CryptoKeyPair): Promise<CryptoKey> => {
 		return await crypto.subtle.deriveKey(
 			{
 				name: "ECDH",
-				public: publicKey,
+				public: keyPair.publicKey,
 			},
-			privateKey,
+			keyPair.privateKey,
 			{
 				name: "AES-GCM",
 				length: 256,
@@ -51,8 +51,11 @@ export class E2EEncryptorStore {
 		)
 	}
 
-	static encrypt = async (value: string, key: CryptoKey): Promise<E2EEncryptorEncryptedValue> => {
-		const derivedKey = await E2EEncryptorStore.deriveKey(key, key)
+	static encrypt = async (
+		value: string,
+		keyPair: CryptoKeyPair,
+	): Promise<E2EEncryptorEncryptedValue> => {
+		const derivedKey = await E2EEncryptorStore.deriveKey(keyPair)
 		const iv = crypto.getRandomValues(new Uint8Array(12)) // Init vector for AES-GCM
 		const encodedValue = new TextEncoder().encode(value)
 		const ciphertext = await crypto.subtle.encrypt(
@@ -72,9 +75,9 @@ export class E2EEncryptorStore {
 
 	static decrypt = async (
 		encrypted: E2EEncryptorEncryptedValue,
-		key: CryptoKey,
+		keyPair: CryptoKeyPair,
 	): Promise<string> => {
-		const derivedKey = await E2EEncryptorStore.deriveKey(key, key)
+		const derivedKey = await E2EEncryptorStore.deriveKey(keyPair)
 		const decrypted = await crypto.subtle.decrypt(
 			{
 				name: "AES-GCM",
@@ -88,7 +91,7 @@ export class E2EEncryptorStore {
 
 	static getKeys = async () => {
 		const key = await getKeyVal(E2EEncryptorStore.idbKey)
-		return key
+		return key as CryptoKeyPair
 	}
 
 	static setKeys = async (keys: {privateKey: CryptoKey; publicKey: CryptoKey}) => {
