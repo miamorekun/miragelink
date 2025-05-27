@@ -43,7 +43,12 @@ function DialogRoomWrapper({className}: Props) {
 				</div>
 			)} */}
 
-			{dialogId && <DialogRoom className="w-full h-full" />}
+			{dialogId && (
+				<DialogRoom
+					key={dialogId}
+					className="w-full h-full"
+				/>
+			)}
 		</div>
 	)
 }

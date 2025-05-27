@@ -1,3 +1,5 @@
+"use client"
+
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {cn} from "@/utils/helpers/shadcn-ui"
@@ -55,7 +57,7 @@ function DialogMessageInput({className}: Props) {
 			})
 
 			const content = {
-				iv: encryptedValue.iv,
+				iv: btoa(String.fromCharCode(...new Uint8Array(encryptedValue.iv))),
 				ciphertext: btoa(String.fromCharCode(...new Uint8Array(encryptedValue.ciphertext))),
 			}
 

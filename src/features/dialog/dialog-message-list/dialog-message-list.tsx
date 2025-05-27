@@ -1,3 +1,5 @@
+"use client"
+
 import {useGetChatByUserIds} from "@/services/hooks/chat/use-get-chat-by-user-ids"
 import {useGetMessageList} from "@/services/hooks/message/use-get-message-list"
 import {cn} from "@/utils/helpers/shadcn-ui"
@@ -44,27 +46,36 @@ function DialogMessageList({className}: Props) {
 			const decryptedMessages = await Promise.all(
 				messages.map(async (message) => {
 					const value = JSON.parse(message.content) as {
-						iv: Uint8Array<ArrayBuffer>
+						iv: string
 						ciphertext: string
 					}
 
-					const modifiedValue: E2EEncryptorEncryptedValue = {
-						iv: value.iv,
-						ciphertext: new Uint8Array(
-							atob(value.ciphertext)
-								.split("")
-								.map((c) => c.charCodeAt(0)),
-						).buffer,
-					}
+					try {
+						console.log("Decoding message:", {
+							iv: value.iv,
+							ciphertext: value.ciphertext,
+						})
 
-					const decryptedContent = await E2EEncryptorStore.decrypt(modifiedValue, {
-						privateKey,
-						publicKey: toUserPublicKey,
-					})
+						const modifiedValue: E2EEncryptorEncryptedValue = {
+							iv: Uint8Array.from(atob(value.iv), (c) => c.charCodeAt(0)),
+							ciphertext: Uint8Array.from(atob(value.ciphertext), (c) => c.charCodeAt(0)).buffer,
+						}
 
-					return {
-						...message,
-						content: decryptedContent,
+						const decryptedContent = await E2EEncryptorStore.decrypt(modifiedValue, {
+							privateKey,
+							publicKey: toUserPublicKey,
+						})
+
+						return {
+							...message,
+							content: decryptedContent,
+						}
+					} catch (error) {
+						console.error("Decryption error:", error, "Message content:", message.content)
+						return {
+							...message,
+							content: "[Encrypted message]",
+						}
 					}
 				}),
 			)
