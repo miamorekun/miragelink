@@ -10,7 +10,7 @@ type Props = {
 
 function MomentProvider({children}: Props) {
 	useEffect(() => {
-		moment.locale("ru")
+		moment.locale("en")
 	}, [])
 
 	return <>{children}</>
