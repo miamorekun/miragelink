@@ -10,21 +10,15 @@ import {E2EEncryptorStore} from "@/stores/e2e-encryptor/e2e-encryptor-store"
 import {E2EEncryptorEncryptedValue} from "@/types/e2e-encryptor.types"
 import {selectUser} from "@/services/api/user/select-user"
 
-type Props = {
-	className?: string
-}
+type Props = {className?: string}
 
 function DialogMessageList({className}: Props) {
-	// State
 	const {session} = useSessionStore()
-	const searchParams = useSearchParams()
-	const dialogId = searchParams.get("dialogId")
+	const dialogId = useSearchParams().get("dialogId")
 	const containerRef = useRef<HTMLDivElement>(null)
-
 	const [decryptedMessages, setDecryptedMessages] = useState<TMessage[]>([])
 
-	// Queries
-	const {data: chat, isPending: isPendingChat} = useGetChatByUserIds(
+	const {data: chat} = useGetChatByUserIds(
 		{userIds: [session!.user!.id, dialogId!]},
 		{enabled: Boolean(session?.user?.id && dialogId)},
 	)
@@ -35,53 +29,51 @@ function DialogMessageList({className}: Props) {
 	)
 
 	useLayoutEffect(() => {
-		if (containerRef.current) {
-			containerRef.current.scrollTop = containerRef.current.scrollHeight
-		}
+		containerRef.current?.scrollTo({top: containerRef.current.scrollHeight})
 	}, [messages])
 
 	useEffect(() => {
-		if (messages && messages.length > 0) {
-			const decryptMessages = async () => {
-				const {privateKey} = await E2EEncryptorStore.getKeys()
-				const user = await selectUser({uid: dialogId!})
+		if (!messages?.length) return
 
-				if (!user?.public_key) {
-					console.error("User not found")
-					return
-				}
+		const decryptMessages = async () => {
+			const {privateKey} = await E2EEncryptorStore.getKeys()
+			const user = await selectUser({uid: dialogId!})
+			if (!user?.public_key) return
 
-				const toUserPublicKey = await E2EEncryptorStore.importKey(user.public_key)
+			const toUserPublicKey = await E2EEncryptorStore.importKey(user.public_key)
+			const decryptedMessages = await Promise.all(
+				messages.map(async (message) => {
+					const value = JSON.parse(message.content) as {
+						iv: Uint8Array<ArrayBuffer>
+						ciphertext: string
+					}
 
-				const decryptedMessages = await Promise.all(
-					messages?.map(async (message) => {
-						const value = JSON.parse(message.content) as E2EEncryptorEncryptedValue
-						const modifiedValue: E2EEncryptorEncryptedValue = {
-							iv: value.iv,
-							// @ts-ignore
-							ciphertext: new Uint8Array(
-								// @ts-ignore
-								atob(value.ciphertext as string)
-									.split("")
-									.map((c) => c.charCodeAt(0)),
-							).buffer,
-						}
+					const modifiedValue: E2EEncryptorEncryptedValue = {
+						iv: value.iv,
+						ciphertext: new Uint8Array(
+							atob(value.ciphertext)
+								.split("")
+								.map((c) => c.charCodeAt(0)),
+						).buffer,
+					}
 
-						const decryptedValue = await E2EEncryptorStore.decrypt(modifiedValue, {
-							privateKey,
-							publicKey: toUserPublicKey,
-						})
+					const decryptedContent = await E2EEncryptorStore.decrypt(modifiedValue, {
+						privateKey,
+						publicKey: toUserPublicKey,
+					})
 
-						return decryptedValue
-					}),
-				)
+					return {
+						...message,
+						content: decryptedContent,
+					}
+				}),
+			)
 
-				return decryptedMessages
-			}
-
-			decryptMessages()
+			setDecryptedMessages(decryptedMessages)
 		}
-	}, [messages])
+
+		decryptMessages()
+	}, [messages, dialogId])
 
 	return (
 		<div className={cn("relative", className)}>
