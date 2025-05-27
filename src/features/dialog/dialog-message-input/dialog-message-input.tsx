@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button"
 import {Input} from "@/components/ui/input"
 import {cn} from "@/utils/helpers/shadcn-ui"
-import React, {ChangeEvent, useLayoutEffect, useState} from "react"
+import React, {ChangeEvent, useLayoutEffect, useState, useEffect} from "react"
 import {IoSend} from "react-icons/io5"
 import {useGetChatByUserIds} from "@/services/hooks/chat/use-get-chat-by-user-ids"
 import {useSearchParams} from "next/navigation"
@@ -14,6 +14,7 @@ import {Loader} from "@/components/ui/loader"
 import {useQueryClient} from "@tanstack/react-query"
 import {QueryKeys} from "@/utils/constants/query-keys.constsants"
 import {E2EEncryptorStore} from "@/stores/e2e-encryptor/e2e-encryptor-store"
+import {selectUser} from "@/services/api/user/select-user"
 
 type Props = {
 	className?: string
@@ -61,12 +62,37 @@ function DialogMessageInput({className}: Props) {
 				chatId = createdChat?.id
 			}
 
-			const keys = await E2EEncryptorStore.getKeys()
-			const encryptedValue = await E2EEncryptorStore.encrypt(value, keys)
+			const {privateKey: myPrivateKey} = await E2EEncryptorStore.getKeys()
+			const toUser = await selectUser({uid: dialogId})
+
+			if (!toUser) {
+				console.error("User not found")
+				return
+			}
+
+			const {privateKey: toUserPrivateKey} = await E2EEncryptorStore.getKeys()
+			const toUserPublicKeySnapshot = toUser.public_key
+
+			if (!toUserPublicKeySnapshot) {
+				console.error("User public key not found")
+				return
+			}
+
+			const toUserPublicKey = await E2EEncryptorStore.importKey(toUserPublicKeySnapshot)
+
+			const encryptedValue = await E2EEncryptorStore.encrypt(value, {
+				privateKey: myPrivateKey,
+				publicKey: toUserPublicKey,
+			})
+
+			const content = {
+				iv: encryptedValue.iv,
+				ciphertext: btoa(String.fromCharCode(...new Uint8Array(encryptedValue.ciphertext))),
+			}
 
 			await postMessage({
 				chatId,
-				content: JSON.stringify(encryptedValue),
+				content: JSON.stringify(content),
 				senderId: session.user.id,
 			})
 
@@ -93,6 +119,14 @@ function DialogMessageInput({className}: Props) {
 	const onChangeInputValue = (event: ChangeEvent<HTMLInputElement>): void => {
 		setValue(event.target.value)
 	}
+
+	useEffect(() => {
+		const timeoutId = setTimeout(() => {
+			// ... инвалидация запросов ...
+		}, 100)
+
+		return () => clearTimeout(timeoutId)
+	}, [])
 
 	return (
 		<form
