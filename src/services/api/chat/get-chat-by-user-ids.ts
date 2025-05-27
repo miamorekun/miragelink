@@ -7,7 +7,6 @@ export type GetChatByUserIdsParams = {
 }
 
 export type GetChatByUserIdsResponse = TChat | null
-
 export const getChatByUserIds = async (params: GetChatByUserIdsParams) => {
 	const {userIds} = params
 	const [userId1, userId2] = userIds
